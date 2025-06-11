@@ -1,0 +1,19 @@
+-- 1) Qual o departamento com maior número de pessoas?
+SELECT d.name AS departamento, COUNT(e.idEmployee) AS total_empregados
+FROM departments d
+JOIN employees e ON d.idDepartment = e.idDepartment
+GROUP BY d.idDepartment
+ORDER BY total_empregados DESC
+LIMIT 1;
+
+-- 2) Quais são os departamentos por cidade?
+SELECT city, GROUP_CONCAT(name SEPARATOR ', ') AS departamentos
+FROM departments
+GROUP BY city;
+
+-- 3) Relação de empregados por departamento
+SELECT d.name AS departamento, CONCAT(e.Fname, ' ', e.Lname) AS empregado
+FROM employees e
+JOIN departments d ON e.idDepartment = d.idDepartment
+ORDER BY d.name, empregado;
+
