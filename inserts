@@ -1,0 +1,109 @@
+insert into clients (Fname, Minit, Lname, cpf, address)
+values
+('Maria', 'M', 'Silva', 12346789, 'Rua Silva de Prata 29, Carangola - Cidade das Flores'),
+('Matheus', 'O', 'Pimentel', 987654321, 'Rua Alameda 289, Centro - Cidade das Flores'),
+('Ricardo', 'F', 'Silva', 45678913, 'Avenida Alameda Vinha 1009, Centro - Cidade das Flores'),
+('Julia', 'S', 'França', 789123456, 'Rua Lareijras 861, Centro - Cidade das Flores'),
+('Roberta', 'G', 'Assis', 98745631, 'Avenida de Koller 19, Centro - Cidade das Flores'),
+('Isabela', 'M', 'Cruz', 654789123, 'Rua Alameda das Flores 28, Centro - Cidade das Flores');
+
+
+insert into product (Pname, classification_kids, category, avaliacao, size) values
+('Fone de ouvido', false, 'Eletronico', 4, null),
+('Barbie Elsa', true, 'Brinquedos', 3, null),
+('Body Carters', true, 'Vestimenta', 5, null),
+('Microfone Vedo - Youtuber', false, 'Eletronico', 4, null),
+('Sofá retrátil', false, 'Moveis', 3, '3x57x80'),
+('Farinha de arroz', false, 'Alimentos', 2, null),
+('Fire Stick Amazon', false, 'Eletronico', 3, null);
+
+insert into orders (idOrderClient, orderStatus, orderDescription, sendValue, paymentCash) values
+(1, default, 'Compra via aplicativo', null, 1),
+(2, default, 'Compra via aplicativo', 50, 0),
+(3, 'Confirmado', null, null, 1),
+(4, default, 'Compra via web site', 150, 0);
+
+
+insert into productOrder (idPOproduct, idPOorder, poQuantity, poStatus) values
+(1, 1, 2, null),
+(2, 1, 1, null),
+(3, 2, 1, null);
+
+
+insert into productStorage (storageLocation, quantity) values
+('Rio de Janeiro', 1000),
+('Rio de Janeiro', 500),
+('São Paulo', 10),
+('São Paulo', 100),
+('São Paulo', 10),
+('Brasília', 60);
+
+
+insert into storageLocation (idLproduct, idLstorage, location) values
+(1, 2, 'RJ'),
+(2, 6, 'GO');
+
+
+insert into supplier (SocialName, CNPJ, contact) values
+('Almeida e filhos', 123456789123456, '21985474'),
+('Eletrônicos Silva', 854519649143457, '21985484'),
+('Eletrônicos Valma', 934567893934695, '21975474');
+
+
+insert into productSupplier (idPsSupplier, idPsProduct, quantity) values
+(1,1,500),
+(1,2,400),
+(2,4,633),
+(3,3,5),
+(2,5,10);
+
+
+insert into seller (SocialName, AbstName, CNPJ, CPF, location, contact) values
+('Tech eletronics', null, 123456789456321, null, 'Rio de Janeiro', 219946287),
+('Botique Durgas', null, null, 123456783, 'Rio de Janeiro', 219567895),
+('Kids World', null, 456789123654485, null, 'São Paulo', 1198657484);
+
+
+insert into productSeller (idPseller, idPproduct, prodQuantity) values
+(1,6,80),
+(2,7,10);
+
+INSERT INTO client_pf (idClient, cpf) VALUES
+(1, '00012346789'),
+(2, '00098765432'),
+(3, '00045678913'),
+(4, '00078912345'),
+(5, '00098745631'),
+(6, '00065478912');
+
+
+INSERT INTO payment_methods (idOrder, method, amount) VALUES
+(1, 'Dinheiro', 100),
+(2, 'Pix', 50),
+(3, 'Dinheiro', 75),
+(4, 'Cartão de Crédito', 150);
+
+
+INSERT INTO delivery (idOrder, deliveryStatus, trackingCode) VALUES
+(1, 'Em Transporte', 'BR1234567890BR'),
+(2, 'Entregue', 'BR9876543210BR'),
+(3, 'Pendente', NULL),
+(4, 'Cancelado', NULL);
+
+-- Departamentos
+INSERT INTO departments (name, city) VALUES
+('TI', 'São Paulo'),
+('RH', 'São Paulo'),
+('Marketing', 'Rio de Janeiro'),
+('Financeiro', 'Brasília');
+
+-- Empregados
+INSERT INTO employees (Fname, Lname, idDepartment) VALUES
+('João', 'Silva', 1),
+('Maria', 'Oliveira', 1),
+('Carlos', 'Pereira', 2),
+('Ana', 'Souza', 2),
+('Paulo', 'Almeida', 2),
+('Fernanda', 'Costa', 3),
+('Juliana', 'Lima', 4),
+('Bruno', 'Ferraz', 1);
