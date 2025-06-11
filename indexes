@@ -1,0 +1,30 @@
+-- 1. Índice para busca de clientes por CPF (apesar de já ser UNIQUE, reforçamos a relevância)
+CREATE UNIQUE INDEX idx_clients_cpf ON clients(cpf);
+
+-- 2. Índice para acelerar busca por categoria de produto
+CREATE INDEX idx_product_category ON product(category);
+
+-- 3. Índice para busca rápida de pedidos por cliente
+CREATE INDEX idx_orders_idOrderClient ON orders(idOrderClient);
+
+-- 4. Índice para facilitar joins e filtros em pedidos/produtos
+CREATE INDEX idx_productOrder_idPOorder ON productOrder(idPOorder);
+
+-- 5. Índice para acelerar buscas de produtos fornecidos por fornecedor
+CREATE INDEX idx_productSupplier_idPsProduct ON productSupplier(idPsProduct);
+
+-- 6. Índice para busca por nome de produto (quando LIKE é usado, pode não ajudar muito dependendo do padrão, mas é comum)
+CREATE INDEX idx_product_Pname ON product(Pname);
+
+-- 7. Índice para acelerar consulta por status da entrega
+CREATE INDEX idx_delivery_status ON delivery(deliveryStatus);
+
+-- 8. Índice para pedidos por status (confirmações, pendências, etc)
+CREATE INDEX idx_orders_status ON orders(orderStatus);
+
+-- 9. Índice que acelera a busca e o agrupamento por essa coluna, tornando a consulta mais rápida
+CREATE INDEX idx_department_city ON departments(city);
+
+-- 10. Índice que permite buscas rápidas dos empregados de um departamento, acelerando as queries que filtram ou agrupam por essa coluna
+CREATE INDEX idx_employee_department ON employees(idDepartment);
+
