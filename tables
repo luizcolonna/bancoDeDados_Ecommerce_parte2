@@ -1,0 +1,156 @@
+-- DROP DATABASE ECOMMERCE; 
+
+CREATE DATABASE ECOMMERCE;
+
+USE ECOMMERCE;
+
+create table clients(
+	idClient int auto_increment primary key,
+	Fname varchar(10),
+	Minit char(3),
+	Lname varchar(20),
+	cpf char(11) not null,
+	address varchar(255),
+	constraint unique_client unique(cpf)
+);
+
+create table product(
+	idProduct int auto_increment primary key,
+	Pname varchar(255) not null,
+	classification_kids bool default false,
+	category enum('Eletronico','Vestimenta','Brinquedos','Alimentos', 'Moveis') default 'Eletronico',
+	avaliacao float default 0,
+	size varchar(10)
+);
+
+create table orders(
+	idOrder int auto_increment primary key,
+	idOrderClient int,
+	orderStatus enum('Cancelado', 'Confirmado', 'Em processamento') default 'Em processamento',
+	orderDescription varchar(255),
+	sendValue float default 10,
+	paymentCash bool default false,
+	constraint fk_orders_client foreign key (idOrderClient) references clients(idClient)
+	on update cascade
+);
+
+create table productStorage(
+	idProdStorage int auto_increment primary key,
+	storageLocation varchar(255),
+	quantity int default 0
+);
+
+create table supplier(
+	idSupplier int auto_increment primary key,
+	socialName varchar(255) not null,
+	cnpj char(15) not null,
+	contact char(11) not null,
+	constraint unique_supplier unique(cnpj)	
+);
+
+create table seller(
+	idSeller int auto_increment primary key,
+	socialName varchar(255) not null,
+	abstName varchar(255),
+	cnpj char(15),
+	cpf char(9),
+	location varchar(255),
+	contact char(11) not null,
+	constraint unique_cnpj_seller unique(cnpj),
+	constraint unique_cpf_seller unique(cpf)	
+);
+
+create table productSeller(
+	idPSeller int,
+	idPproduct int,
+	prodQuantity int default 1,
+	primary key (idPSeller, idPproduct),
+	constraint fk_product_seller foreign key (idPSeller) references seller(idSeller),
+	constraint fk_product_product foreign key (idPproduct) references product(idProduct)
+);
+
+create table productOrder(
+	idPOproduct int,
+	idPOorder int,
+	poQuantity int default 1,
+	poStatus enum ('Disponivel','Sem Estoque') default 'Disponivel',
+	primary key (idPOproduct, idPOorder),
+	constraint fk_productorder_seller foreign key (idPOproduct) references product(idProduct),
+	constraint fk_productorder_product foreign key (idPOorder) references orders(idOrder) 
+);
+
+create table storageLocation(
+	idLproduct int,
+	idLStorage int,
+	location varchar(255) not null,
+	primary key (idLproduct, idLStorage),
+	constraint fk_storage_location_product foreign key(idLproduct) references product(idProduct),
+	constraint fk_storage_location_storage foreign key (idLStorage) references productStorage(idProdStorage)
+);
+
+create table productSupplier(
+	idPsSupplier int,
+	idPsProduct int,
+	quantity int not null,
+	primary key (idPsSupplier, idPsProduct),
+	constraint fk_product_supplier_supplier foreign key (idPsSupplier) references supplier(idSupplier),
+	constraint fk_product_supplier_product foreign key (idPsProduct) references product(idProduct)
+);
+
+-- Pessoa Física
+CREATE TABLE client_pf (
+    idClient INT PRIMARY KEY,
+    cpf CHAR(11) NOT NULL UNIQUE,
+    FOREIGN KEY (idClient) REFERENCES clients(idClient)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Pessoa Jurídica
+CREATE TABLE client_pj (
+    idClient INT PRIMARY KEY,
+    cnpj CHAR(14) NOT NULL UNIQUE,
+    FOREIGN KEY (idClient) REFERENCES clients(idClient)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Metodos de pagamento
+CREATE TABLE payment_methods (
+    idPayment INT AUTO_INCREMENT PRIMARY KEY,
+    idOrder INT,
+    method ENUM('Cartão de Crédito', 'Cartão de Débito', 'Pix', 'Boleto', 'Dinheiro') NOT NULL,
+    amount FLOAT NOT NULL,
+    FOREIGN KEY (idOrder) REFERENCES orders(idOrder)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Delivery
+CREATE TABLE delivery (
+    idDelivery INT AUTO_INCREMENT PRIMARY KEY,
+    idOrder INT,
+    deliveryStatus ENUM('Pendente', 'Em Transporte', 'Entregue', 'Cancelado') DEFAULT 'Pendente',
+    trackingCode VARCHAR(50),
+    FOREIGN KEY (idOrder) REFERENCES orders(idOrder)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+-- Departments
+CREATE TABLE departments (
+    idDepartment INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    city VARCHAR(100) NOT NULL
+);
+
+
+-- Employees
+CREATE TABLE employees (
+    idEmployee INT AUTO_INCREMENT PRIMARY KEY,
+    Fname VARCHAR(50),
+    Lname VARCHAR(50),
+    idDepartment INT,
+    FOREIGN KEY (idDepartment) REFERENCES departments(idDepartment)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
+	
