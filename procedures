@@ -1,0 +1,65 @@
+
+DELIMITER //
+
+CREATE PROCEDURE sp_manage_clients(
+    IN p_action INT,
+    IN p_idClient INT,
+    IN p_Fname VARCHAR(10),
+    IN p_Minit CHAR(3),
+    IN p_Lname VARCHAR(20),
+    IN p_cpf CHAR(11),
+    IN p_address VARCHAR(255)
+)
+BEGIN
+    IF p_action = 1 THEN
+        -- Select by idClient (if idClient = 0, retorna todos)
+        IF p_idClient = 0 THEN
+            SELECT * FROM clients;
+        ELSE
+            SELECT * FROM clients WHERE idClient = p_idClient;
+        END IF;
+
+    ELSEIF p_action = 2 THEN
+        -- Update
+        UPDATE clients
+        SET Fname = p_Fname,
+            Minit = p_Minit,
+            Lname = p_Lname,
+            cpf = p_cpf,
+            address = p_address
+        WHERE idClient = p_idClient;
+
+    ELSEIF p_action = 3 THEN
+        -- Delete
+        DELETE FROM clients WHERE idClient = p_idClient;
+
+    ELSEIF p_action = 4 THEN
+        -- Insert
+        INSERT INTO clients (Fname, Minit, Lname, cpf, address)
+        VALUES (p_Fname, p_Minit, p_Lname, p_cpf, p_address);
+
+    ELSE
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid action code';
+    END IF;
+END;
+//
+
+DELIMITER ;
+
+
+-- SELECT todos:
+CALL sp_manage_clients(1, 0, NULL, NULL, NULL, NULL, NULL);
+
+-- SELECT por id:
+CALL sp_manage_clients(1, 2, NULL, NULL, NULL, NULL, NULL);
+
+-- UPDATE (modificar cliente id 2):
+CALL sp_manage_clients(2, 2, 'NovoNome', 'N', 'Sobrenome', '00012345678', 'Novo endereço');
+
+-- DELETE (deletar cliente id 3):
+CALL sp_manage_clients(3, 3, NULL, NULL, NULL, NULL, NULL);
+
+-- INSERT novo cliente:
+CALL sp_manage_clients(4, NULL, 'Lucas', 'L', 'Silva', '12345678900', 'Rua Nova 123');
+
+
